@@ -7,6 +7,7 @@ const express = require("express");
 
 const STATIC_DIR = path.join(__dirname, "static_server_folder");
 const LOCAL_SERVER_PORT = 3000;
+const LOCAL_SERVER_HOST = `http://localhost:${LOCAL_SERVER_PORT}`;
 
 async function downloadWebsite(targetUrl) {
   // Step 0: Clean up old folder
@@ -40,9 +41,9 @@ async function downloadWebsite(targetUrl) {
       await fs.ensureDir(path.dirname(localCssPath));
       await fs.writeFile(localCssPath, cssContent, "utf-8");
 
-      // Update href in HTML to point to local version
+      // Update href to full local server path
       const localUrlPath = cssPath.startsWith("/") ? cssPath : `/${cssPath}`;
-      $(linkTag).attr("href", localUrlPath);
+      $(linkTag).attr("href", `${LOCAL_SERVER_HOST}${localUrlPath}`);
     } catch (err) {
       console.error(`Failed to fetch CSS: ${cssUrl}`, err.message);
     }
